@@ -1,6 +1,6 @@
 # Bug Tracker
 
-*Last updated: 18/11/2023*
+_Last updated: 21/11/2023_
 
 ## Description
 
@@ -36,67 +36,66 @@ The following section discusses the initial system design for Bug Tracker.
 
 ### Data Models
 
-TODO: to update diagram to account for other entities
 ![entity relationship diagram](./assets/data-model.jpg)
 
 #### Account (~0.148KB)
 
-|Key | Field | Type |  Max field Size | Explanation |Required |
-|--- | ------| -----| -------- | -------------- | ----------- |
-|PK| username | string | 64 | username ported from external system. Used as an id for the document | Yes |
-|| display_name | string | 64 | display name rendered for the UI | Yes |
-|| reward_points | int || points accumulated by the user from certain actions in the gamification feature. Defaults to `0` | Yes |
-|| num_reports_created | int || number of reports submitted by the user. Defaults to `0` | Yes |
-|| num_reports_fixed | int || number of bug/ux-issues fixed by the developer. Defaults to `0` | Yes |
+| Key | Field               | Type   | Max field Size | Explanation                                                                                      | Required |
+| --- | ------------------- | ------ | -------------- | ------------------------------------------------------------------------------------------------ | -------- |
+| PK  | username            | string | 64             | username ported from external system. Used as an id for the document                             | Yes      |
+|     | display_name        | string | 64             | display name rendered for the UI                                                                 | Yes      |
+|     | reward_points       | int    |                | points accumulated by the user from certain actions in the gamification feature. Defaults to `0` | Yes      |
+|     | num_reports_created | int    |                | number of reports submitted by the user. Defaults to `0`                                         | Yes      |
+|     | num_reports_fixed   | int    |                | number of bug/ux-issues fixed by the developer. Defaults to `0`                                  | Yes      |
 
 #### Report (~1.152KB)
 
-|Key | Field | Type |  Max field Size | Explanation |Required |
-|--- | ------| -----| -------- | -------------- | ----------- |
-| PK | id | string | 64 | id of document | Yes |
-|FK| product_id | string | 64 | product key used for consolidation and filtering | Yes |
-|| type | string | 16 | set of report type. Set to one of the following types: `bug`, `ux_issue`, `feature_request`, `others` | Yes
-|| title | string | 64 | user input; title of the report | Yes |
-|| description | string | 512 | user input description of the report. Supports rich text for indentations, bullet points etc | Yes |
-|| external_link | string | 256 | optional URL string to link to external tools such as Jira/Gitlab etc | No |
-|| status | string | 16 | set of report statuses. Set to one of the following statuses: `submitted`, `triaged`, `fixed`, `closed`, `fixing`. `fixed` status will act as `implemented` for feature requests| Yes |
-|| created_date | string | 32 | report created datetime stored in ISO format | Yes |
-|| fixed_date | string | 32 | datetime in ISO format; set when status is changed to `fixed`. Used for analytical purposes how see how long it takes to fix an issue| No |
-|| expiration_date | string | 32 | datetime in ISO format; set when status is changed to `closed`. When a report is past this expiration date, this document (and other related documents) are deleted from the database | No |
-|| reporter | string | 32 | username of the user that created the report | Yes |
-|| assignee | string | 32 | username of the developer who is responsible for the report. Used for leaderboard purposes | No |
+| Key | Field           | Type   | Max field Size | Explanation                                                                                                                                                                           | Required |
+| --- | --------------- | ------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| PK  | id              | string | 64             | id of document                                                                                                                                                                        | Yes      |
+| FK  | product_id      | string | 64             | product key used for consolidation and filtering                                                                                                                                      | Yes      |
+|     | type            | string | 16             | set of report type. Set to one of the following types: `bug`, `ux_issue`, `feature_request`, `others`                                                                                 | Yes      |
+|     | title           | string | 64             | user input; title of the report                                                                                                                                                       | Yes      |
+|     | description     | string | 512            | user input description of the report. Supports rich text for indentations, bullet points etc                                                                                          | Yes      |
+|     | external_link   | string | 256            | optional URL string to link to external tools such as Jira/Gitlab etc                                                                                                                 | No       |
+|     | status          | string | 16             | set of report statuses. Set to one of the following statuses: `submitted`, `triaged`, `fixed`, `closed`, `fixing`. `fixed` status will act as `implemented` for feature requests      | Yes      |
+|     | created_date    | string | 32             | report created datetime stored in ISO format                                                                                                                                          | Yes      |
+|     | fixed_date      | string | 32             | datetime in ISO format; set when status is changed to `fixed`. Used for analytical purposes how see how long it takes to fix an issue                                                 | No       |
+|     | expiration_date | string | 32             | datetime in ISO format; set when status is changed to `closed`. When a report is past this expiration date, this document (and other related documents) are deleted from the database | No       |
+|     | reporter        | string | 32             | username of the user that created the report                                                                                                                                          | Yes      |
+|     | assignee        | string | 32             | username of the developer who is responsible for the report. Used for leaderboard purposes                                                                                            | No       |
 
 #### Comment (~0.448KB)
 
-|Key | Field | Type |  Max field Size | Explanation |Required |
-|--- | ------| -----| -------- | -------------- | ----------- |
-|PK| id | string | 64 | id of the document | Yes |
-|| author | string | 32 | username of the comment author | Yes |
-|| created_date | string | 32 | datetime in ISO string, comment date | Yes |
-|| text | string | 256 | comment | Yes |
-|| is_edited | boolean || sets to `true` if the `text` field is edited. Defaults to `false` | Yes |
-|FK| report_id | string | 64 | stores reference to the report | Yes |
+| Key | Field        | Type    | Max field Size | Explanation                                                       | Required |
+| --- | ------------ | ------- | -------------- | ----------------------------------------------------------------- | -------- |
+| PK  | id           | string  | 64             | id of the document                                                | Yes      |
+|     | author       | string  | 32             | username of the comment author                                    | Yes      |
+|     | created_date | string  | 32             | datetime in ISO string, comment date                              | Yes      |
+|     | text         | string  | 256            | comment                                                           | Yes      |
+|     | is_edited    | boolean |                | sets to `true` if the `text` field is edited. Defaults to `false` | Yes      |
+| FK  | report_id    | string  | 64             | stores reference to the report                                    | Yes      |
 
 #### Media (~0.384KB)
 
-|Key | Field | Type |  Max field Size | Explanation |Required |
-|--- | ------| -----| -------- | -------------- | ----------- |
-|PK| id | string | 64 | id of the document | Yes |
-|| file_name | string | 64 | name of the media file, user input | Yes
-|| media_type | string | 16 | Type of the media, either `video` or `image` | Yes |
-|| upload_date | string | 32 | datetime in ISO string, when the media is uploaded | Yes |
-|| src_path | string | 128 | directory where this media is stored | Yes |
-|| height | int || height of the media | Yes |
-|| width | int || width of the media | Yes |
-|FK| report_id | string | 64 | stores reference to the report | Yes |
+| Key | Field       | Type   | Max field Size | Explanation                                        | Required |
+| --- | ----------- | ------ | -------------- | -------------------------------------------------- | -------- |
+| PK  | id          | string | 64             | id of the document                                 | Yes      |
+|     | file_name   | string | 64             | name of the media file, user input                 | Yes      |
+|     | media_type  | string | 16             | Type of the media, either `video` or `image`       | Yes      |
+|     | upload_date | string | 32             | datetime in ISO string, when the media is uploaded | Yes      |
+|     | src_path    | string | 128            | directory where this media is stored               | Yes      |
+|     | height      | int    |                | height of the media                                | Yes      |
+|     | width       | int    |                | width of the media                                 | Yes      |
+| FK  | report_id   | string | 64             | stores reference to the report                     | Yes      |
 
 #### Product (~0.384KB)
 
-|Key | Field | Type |  Max field Size | Explanation |Required |
-|--- | ------| -----| -------- | -------------- | ----------- |
-|PK| id | string | 64 | id of the document | Yes|
-|| name | string | 64 | product name | Yes|
-|| description | string | 256 | description of product | No |
+| Key | Field       | Type   | Max field Size | Explanation            | Required |
+| --- | ----------- | ------ | -------------- | ---------------------- | -------- |
+| PK  | id          | string | 64             | id of the document     | Yes      |
+|     | name        | string | 64             | product name           | Yes      |
+|     | description | string | 256            | description of product | No       |
 
 ### Users & Traffic Estimates
 
@@ -109,7 +108,7 @@ TODO: to update diagram to account for other entities
 - Assuming each video is 1920x1080 and ~10seconds, it should be 1mb per submitted video. Each image should be 50KB
 - Each month, (10 users x 1 report x (25% x 1MB)) + (10 users x 1 report x (50% x 0.05MB)) = 2.5MB + 0.25MB = **2.75MB of media storage per month**
 - Assuming each report has 3 comments, each report will take up: 1.152KB + (3 x 0.448KB) = 2.496KB
-- Each month, with an average of 10 reports with the accompanied media, (10  x 2.496KB) + (10 x 25% x 1 video x 0.384KB) + (10 x 50% x 3 images x 0.384KB) = **31.68KB of document storage per month**
+- Each month, with an average of 10 reports with the accompanied media, (10 x 2.496KB) + (10 x 25% x 1 video x 0.384KB) + (10 x 50% x 3 images x 0.384KB) = **31.68KB of document storage per month**
 - Total space needed per month: **2.781MB / month**
 - Total space needed per year: 2.756MB x 12 = **~33.4MB / year**
 
@@ -119,11 +118,11 @@ TODO: to update diagram to account for other entities
 
 Gamification feature is introduced to encourage users to report bugs, suggest product improvements and to enhance client-developer collaboration to build better products. The following table shows the proposed point system:
 
-|Action | Points Rewarded | Affected users |
-|--- | ------| -----|
-| submitted a report | 1 | reporter |
-| bug/ux issue report status changed to `fixed` | 3 | reporter, assignee |
-| feature request status changed to `fixed` | 2 | reporter, assignee |
+| Action                                        | Points Rewarded | Affected users     |
+| --------------------------------------------- | --------------- | ------------------ |
+| submitted a report                            | 1               | reporter           |
+| bug/ux issue report status changed to `fixed` | 3               | reporter, assignee |
+| feature request status changed to `fixed`     | 2               | reporter, assignee |
 
 When the action on the table is performed, the backend serivce allocate points to the `Account` table under `reward_points`
 
@@ -142,7 +141,7 @@ The report clean-up feature deletes documents and attached media objects past th
 #### Report clean-up service methods
 
 - getExpiredReports() -> Report[]
-- deleteReport(report_id: string) -> void
+- deleteExpiredReports() -> Report[]
 
 ### 3. Report Service
 
@@ -152,8 +151,11 @@ Handles all report related endpoints.
 
 - createReport(report: Report) -> Report
 - updateReport(report: Report) -> void
-- addComment(comment: Comment) -> Comment
-- updateComment(comment: Comment) -> void
+- deleteReport(report_id: string) -> void
+- getReportsByProduct(product_id: string) -> Report[]
+- getReportsByReporter(account_id: string) -> Report[]
+- addReportComment(comment: Comment) -> Comment
+- updateReportComment(comment: Comment) -> void
 
 ### 4. Media Service
 
@@ -163,10 +165,11 @@ The media service handles uploading and deletion of media related features. The 
 
 - uploadMedia(media: Media, dir_path: string) -> string (src_path)
 - removeMedia(media_id: string) -> void
+- getMedia(media_id: string) -> Media
 
 ### 5. Product Service
 
-The product service handles product related features. 
+The product service handles product related features.
 
 #### Product service methods
 
