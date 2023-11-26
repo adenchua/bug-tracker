@@ -11,7 +11,7 @@ function PublicReportWriteup(): JSX.Element {
       <Typography sx={{ mb: 4 }}>
         Explore successful report submissions and see what others have contributed.
       </Typography>
-      <RedirectActionButton buttonText="View public reports" />
+      <RedirectActionButton buttonText="View public reports" linkTo="/report/vrp" />
     </>
   );
 }

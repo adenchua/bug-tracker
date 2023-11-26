@@ -14,7 +14,7 @@ function BugReportWriteup(): JSX.Element {
         performance and delivering an exceptional user experience. Let&apos;s collaborate and shape
         the future together.
       </Typography>
-      <RedirectActionButton buttonText="Report an issue" />
+      <RedirectActionButton buttonText="Report an issue" linkTo="/report/crp" />
     </>
   );
 }

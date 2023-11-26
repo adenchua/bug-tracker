@@ -1,13 +1,10 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import LandingPage from "./pages/LandingPage";
+import ReportPage from "./pages/ReportPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 const theme = createTheme({
   palette: {
@@ -30,21 +27,23 @@ const theme = createTheme({
   },
 });
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<LandingPage />}>
-      <Route index path="about" element={<LandingPage />} />
-      <Route index path="report" element={<LandingPage />} />
-      <Route index path="leaderboard" element={<LandingPage />} />
-    </Route>,
-  ),
-);
-
 function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <RouterProvider router={router} />
+      <BrowserRouter>
+        <Routes>
+          <Route index path="/" element={<LandingPage />} />
+          <Route path="/about" element={<LandingPage />} />
+          <Route path="/report" element={<ReportPage />}>
+            <Route path="overview" element={<ReportPage />} />
+            <Route path="crp" element={<ReportPage />} />
+            <Route path="vrp" element={<ReportPage />} />
+          </Route>
+          <Route path="/leaderboard" element={<LandingPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
