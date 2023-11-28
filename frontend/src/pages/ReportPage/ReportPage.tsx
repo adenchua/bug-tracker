@@ -1,3 +1,5 @@
+import { Outlet } from "react-router-dom";
+
 import PageLayoutWithSwitches from "../../components/PageLayoutWithSwitches";
 import { Tab } from "../../components/TabNavigationBar";
 
@@ -19,7 +21,7 @@ const tabs: Tab[] = [
 function ReportPage(): JSX.Element {
   return (
     <PageLayoutWithSwitches tabs={tabs}>
-      <div />
+      <Outlet />
     </PageLayoutWithSwitches>
   );
 }
