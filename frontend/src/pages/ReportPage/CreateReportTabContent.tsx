@@ -10,6 +10,7 @@ import { Product } from "../../interfaces/Product";
 import { ReportType } from "../../interfaces/Report";
 import CreateReportFormA from "./CreateReportFormA";
 import CreateReportFormB from "./CreateReportFormB";
+import CreateReportFormReview from "./CreateReportFormReview";
 
 const steps = ["Location", "The issue", "Review report"];
 
@@ -27,10 +28,11 @@ const MOCK_DATA_PRODUCTS: Product[] = [
 
 function CreateReportTabContent(): JSX.Element {
   const [products] = useState<Product[]>(MOCK_DATA_PRODUCTS);
-  const [stepNumber, setStepNumber] = useState<number>(1); // report progress
+  const [stepNumber, setStepNumber] = useState<number>(0); // report progress
 
   const [productId, setProductId] = useState<string | null>(null);
   const [isUnlistedProduct, setIsUnlistedProduct] = useState<boolean>(false);
+  const [issueUrl, setIssueUrl] = useState<string>("");
 
   const [selectedReportType, setSelectedReportType] = useState<ReportType>("bug");
   const [reportTitle, setReportTitle] = useState<string>("");
@@ -46,6 +48,10 @@ function CreateReportTabContent(): JSX.Element {
 
   const handleSelectReportType = (reportType: ReportType): void => {
     setSelectedReportType(reportType);
+  };
+
+  const handleUpdateIssueUrl = (newUrl: string): void => {
+    setIssueUrl(newUrl);
   };
 
   const handleCheckUnlistedProduct = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -83,6 +89,8 @@ function CreateReportTabContent(): JSX.Element {
             isUnlistedProduct={isUnlistedProduct}
             onCheckUnlistedProduct={handleCheckUnlistedProduct}
             onUpdateStepNumber={handleUpdateStepNumber}
+            issueUrl={issueUrl}
+            onUpdateIssueUrl={handleUpdateIssueUrl}
           />
         )}
         {stepNumber === 1 && (
@@ -94,6 +102,16 @@ function CreateReportTabContent(): JSX.Element {
             onUpdateReportTitle={handleUpdateReportTitle}
             reportDescription={reportDescription}
             onUpdateReportDescription={handleUpdateReportDescription}
+          />
+        )}
+        {stepNumber === 2 && (
+          <CreateReportFormReview
+            productId={productId}
+            issueUrl={issueUrl}
+            reportDescription={reportDescription}
+            reportTitle={reportTitle}
+            reportType={selectedReportType}
+            onUpdateStepNumber={handleUpdateStepNumber}
           />
         )}
       </Box>
