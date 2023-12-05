@@ -16,6 +16,8 @@ interface CreateReportFormAProps {
   onCheckUnlistedProduct: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isUnlistedProduct: boolean;
   onUpdateStepNumber: (newStepNumber: number) => void;
+  issueUrl: string;
+  onUpdateIssueUrl: (newIssueUrl: string) => void;
 }
 
 /**
@@ -30,6 +32,8 @@ function CreateReportFormA(props: CreateReportFormAProps): JSX.Element {
     onCheckUnlistedProduct,
     isUnlistedProduct,
     onUpdateStepNumber,
+    issueUrl,
+    onUpdateIssueUrl,
   } = props;
 
   // a product must be selected to progress through the form, unless it is not listed
@@ -68,6 +72,8 @@ function CreateReportFormA(props: CreateReportFormAProps): JSX.Element {
 
       <FormLabel primaryText="[Optional] Which URL have you found the issue in?" />
       <TextField
+        value={issueUrl}
+        onChange={(e) => onUpdateIssueUrl(e.target.value)}
         variant="filled"
         fullWidth
         size="small"

@@ -6,29 +6,14 @@ import { ReportType } from "../../interfaces/Report";
 import FormLabel from "./FormLabel";
 import ProgressButton from "./ProgressButton";
 
-interface DisplayedReportType {
-  label: string;
-  reportType: ReportType;
-}
+type DisplayedReportType = Record<ReportType, string>;
 
-const reportTypeList: DisplayedReportType[] = [
-  {
-    label: "Bug",
-    reportType: "bug",
-  },
-  {
-    label: "UX Issue",
-    reportType: "ux-issue",
-  },
-  {
-    label: "Feature Request",
-    reportType: "feature-request",
-  },
-  {
-    label: "Others",
-    reportType: "others",
-  },
-];
+export const reportDisplayTextMap: DisplayedReportType = {
+  bug: "Bug",
+  "ux-issue": "UX Issue",
+  "feature-request": "Feature Request",
+  others: "Others",
+};
 
 interface CreateReportFormBProps {
   reportType: ReportType;
@@ -42,7 +27,7 @@ interface CreateReportFormBProps {
 
 /**
  * Part 2 of report creation form.
- * handles report location
+ * handles report type, title, description and optional file attachments
  */
 function CreateReportFormB(props: CreateReportFormBProps): JSX.Element {
   const {
@@ -61,14 +46,16 @@ function CreateReportFormB(props: CreateReportFormBProps): JSX.Element {
     <>
       <FormLabel primaryText="Report type" />
       <Box display="flex" gap={2} mb={6}>
-        {reportTypeList.map((reportTypeDisplay) => (
-          <Chip
-            key={reportTypeDisplay.reportType}
-            label={reportTypeDisplay.label}
-            color={reportType === reportTypeDisplay.reportType ? "primary" : "default"}
-            onClick={() => onSelectReportType(reportTypeDisplay.reportType)}
-          />
-        ))}
+        {Object.entries(reportDisplayTextMap).map(([key, value]) => {
+          return (
+            <Chip
+              key={key}
+              label={value}
+              color={reportType === key ? "primary" : "default"}
+              onClick={() => onSelectReportType(key as ReportType)}
+            />
+          );
+        })}
       </Box>
 
       <FormLabel
