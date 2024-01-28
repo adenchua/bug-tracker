@@ -9,7 +9,7 @@
     "dev": "nodemon src/index.ts",
     "lint": "eslint src/**/* --ext .js,.ts",
     "lint:fix": "eslint src/**/* --ext .js,.ts --fix",
-    "format": "prettier --write '**/**/*.{js,ts,md,json}' --config ./.prettierrc.json"
+    "format": "prettier --write '**/**/*.{js,ts,json,cjs}' --config ./.prettierrc.json"
   },
   "dependencies": {
     "dotenv": "^16.3.1",

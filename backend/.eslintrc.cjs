@@ -31,7 +31,7 @@ module.exports = {
     ],
     "@stylistic/indent": [1, 2],
     "@stylistic/no-tabs": 1,
-    "@stylistic/linebreak-style": [1, "windows"],
+    "@stylistic/linebreak-style": [1, "unix"],
   },
   parserOptions: {
     sourceType: "module",

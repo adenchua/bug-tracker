@@ -23,7 +23,7 @@ module.exports = {
     "@stylistic/max-len": [1, { code: 100, ignoreUrls: true }],
     "@stylistic/indent": [1, 2],
     "@stylistic/no-tabs": 1,
-    "@stylistic/linebreak-style": [1, "windows"],
+    "@stylistic/linebreak-style": [1, "unix"],
     "@stylistic/jsx-quotes": [1, "prefer-double"],
   },
   parserOptions: {
