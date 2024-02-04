@@ -1,0 +1,45 @@
+openapi: "3.1.0"
+info:
+  version: 1.0.0
+  title: Example Server
+servers:
+  - url: /api/v1
+paths:
+  /media/upload/{report_id}:
+    post:
+      summary: Upload media files for a report
+      operationId: uploadReportMedia
+      parameters:
+        - in: path
+          description: ID of report to attach media to
+          required: true
+          name: report_id
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        "200":
+          description: "File paths of uploaded media"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  src_path:
+                    type: array
+                    items:
+                      type: string
+        "400":
+          description: 'When file type is invalid (not .jpg/.jpeg/.png/.mp4), name of request body is not "file", empty or more than 5 items'
+        "500":
+          description: "Internal server error"
