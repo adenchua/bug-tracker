@@ -7,6 +7,7 @@ import swaggerUi from "swagger-ui-express";
 import { API_PREPEND, PROXY_STATIC_FOLDER, STATIC_FOLDER } from "./configs/generalConfig";
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware";
 import mediaRouteV1 from "./routes/v1/mediaRoute";
+import reportRouteV1 from "./routes/v1/reportRoute";
 import swaggerHelper from "./utils/swaggerHelper";
 
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: true })); // parses urlencoded bodies wit
 app.use(morgan("combined")); // outputs a rich apache standard logging for every request made
 
 app.use(`${API_PREPEND}/v1/media`, mediaRouteV1.router);
+app.use(`${API_PREPEND}/v1/reports`, reportRouteV1.router);
 
 // static served report attached media
 app.use(`/${PROXY_STATIC_FOLDER}`, express.static(STATIC_FOLDER));

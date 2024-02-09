@@ -1,12 +1,14 @@
 openapi: "3.1.0"
 info:
   version: 1.0.0
-  title: Example Server
+  title: Bug Hunter Server
 servers:
   - url: /api/v1
 paths:
   /media/upload/{report_id}:
     post:
+      tags:
+        - Media
       summary: Upload media files for a report
       operationId: uploadReportMedia
       parameters:
@@ -29,7 +31,7 @@ paths:
                     format: binary
       responses:
         "200":
-          description: "File paths of uploaded media"
+          description: File paths of uploaded media
           content:
             application/json:
               schema:
@@ -39,7 +41,136 @@ paths:
                     type: array
                     items:
                       type: string
+                      example: "http://web-server/reports/dqwomeqwokease/1707469100906-eff473da-3585-4b62-af13-004b58e45efb.jpeg"
         "400":
-          description: 'When file type is invalid (not .jpg/.jpeg/.png/.mp4), name of request body is not "file", empty or more than 5 items'
+          description: When file type is invalid (not .jpg/.jpeg/.png/.mp4), name of request body is not "file", empty or more than 5 items
         "500":
-          description: "Internal server error"
+          description: Internal server error
+
+  /reports:
+    post:
+      tags:
+        - Report
+      summary: Create a new report
+      operationId: createReport
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                report:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      example: This is a title of the report
+                    description:
+                      type: string
+                      example: This is a description of the report
+                    URL:
+                      type: string
+                      example: http://localhost.com/page-where-bug-was-found
+                    type:
+                      type: string
+                      enum:
+                        - BUG
+                        - SUGGESTION
+                      example: BUG
+                    productId:
+                      type: string
+                      example: dqowmdok213
+                    reporterId:
+                      type: string
+                      example: johndoe
+                  required:
+                    - title
+                    - description
+                    - type
+                    - productId
+                    - reporterId
+            required:
+              - report
+      responses:
+        "201":
+          description: Report successfully created, new report object with report ID is returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Report"
+              example:
+                id: Mdwqpdm213
+                title: This is a title of the report
+                description: This is a description of the report
+                URL: http://localhost.com/page-where-bug-was-found
+                type: BUG
+                productId: qowmdok213
+                reporterId: johndoe
+                isPublic: false
+                status: SUBMITTED
+                createdDateISOString: "2024-02-09T08:51:30.142Z"
+        "400":
+          description: An array of invalid fields are returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          example: field
+                        value:
+                          type: string
+                          example: "http://qweqeeqe-where-bug-was-found"
+                        msg:
+                          type: string
+                          example: "report URL must be a valid URL string"
+                        path:
+                          type: string
+                          example: "report.URL"
+                        location:
+                          type: string
+                          example: "body"
+        "500":
+          description: Internal server error
+
+components:
+  schemas:
+    Report:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        URL:
+          type: string
+        productId:
+          type: string
+        type:
+          type: string
+          enum:
+            - BUG
+            - SUGGESTION
+        reporterId:
+          type: string
+        isPublic:
+          type: boolean
+        status:
+          type: string
+          enum:
+            - SUBMITTED
+            - TRIAGED
+            - FIXED
+            - CLOSED
+        createdDateISOString:
+          type: string
+        completedDateISOString:
+          type: string
