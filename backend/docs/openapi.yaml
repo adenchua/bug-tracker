@@ -139,6 +139,60 @@ paths:
         "500":
           description: Internal server error
 
+  /reports/{id}:
+    patch:
+      tags:
+        - Report
+      summary: Update report values
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Report ID of report to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                report:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      example: updated report title
+                    description:
+                      type: string
+                      example: updated report description
+                    type:
+                      type: string
+                      enum:
+                        - BUG
+                        - SUGGESTIon
+                    isPublic:
+                      type: boolean
+                    status:
+                      type: string
+                      enum:
+                        - SUBMITTED
+                        - TRIAGED
+                        - FIXED
+                        - CLOSED
+                    productId:
+                      type: string
+                    URL:
+                      type: string
+      responses:
+        "204":
+          description: Report successfully updated
+        "404":
+          description: A report with the specified ID was not found
+        "400":
+          description: Invalid input
+
 components:
   schemas:
     Report:
