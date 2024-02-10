@@ -31,7 +31,7 @@ const upload = multer({
   // eslint-disable-next-line consistent-return
   fileFilter: (req, file, callback) => {
     // TODO: improve file type validation as mimetype can be changed
-    if (!ACCEPTED_FILE_MIMETYPES.includes(file.mimetype)) {
+    if (!(ACCEPTED_FILE_MIMETYPES as readonly string[]).includes(file.mimetype)) {
       // eslint-disable-next-line @stylistic/max-len
       const errorMessage = `Invalid file type received. Valid file types: ${ACCEPTED_FILE_MIMETYPES.toString()}`;
       return callback(new Error(errorMessage));

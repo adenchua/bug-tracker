@@ -1,4 +1,6 @@
-type AllowedMediaMimeTypes = "image/jpeg" | "image/jpg" | "image/png" | "video/mp4";
+import { ACCEPTED_FILE_MIMETYPES } from "../configs/mediaConfig";
+
+export type AllowedMediaMimeTypes = (typeof ACCEPTED_FILE_MIMETYPES)[number];
 
 export interface Media {
   id: string;
