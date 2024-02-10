@@ -10,4 +10,10 @@ const getReportById = (reportId: string): Report | null => {
   return null;
 };
 
-export default { createReport, updateReport, getReportById };
+const getReportsByProductId = (productId: string): Report[] => {
+  const result: Report[] = [];
+
+  return result;
+};
+
+export default { createReport, updateReport, getReportById, getReportsByProductId };

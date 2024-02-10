@@ -8,6 +8,7 @@ import { API_PREPEND, PROXY_STATIC_FOLDER, STATIC_FOLDER } from "./configs/gener
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware";
 import mediaRouteV1 from "./routes/v1/mediaRoute";
 import reportRouteV1 from "./routes/v1/reportRoute";
+import productRouteV1 from "./routes/v1/productRoute";
 import swaggerHelper from "./utils/swaggerHelper";
 
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(morgan("combined")); // outputs a rich apache standard logging for every
 
 app.use(`${API_PREPEND}/v1/media`, mediaRouteV1.router);
 app.use(`${API_PREPEND}/v1/reports`, reportRouteV1.router);
+app.use(`${API_PREPEND}/v1/products`, productRouteV1.router);
 
 // static served report attached media
 app.use(`/${PROXY_STATIC_FOLDER}`, express.static(STATIC_FOLDER));
