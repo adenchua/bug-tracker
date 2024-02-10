@@ -75,4 +75,12 @@ const updateReport = (req: Request, res: Response): void => {
   res.sendStatus(204);
 };
 
-export default { createReport, updateReport };
+const getReportsByProductId = (req: Request, res: Response): void => {
+  const { id } = req.params;
+
+  const reports = reportService.getReportsByProductId(id);
+
+  res.status(200).send({ data: reports });
+};
+
+export default { createReport, updateReport, getReportsByProductId };
