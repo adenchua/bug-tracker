@@ -54,6 +54,7 @@ paths:
       summary: Create a new report
       operationId: createReport
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -143,14 +144,14 @@ paths:
         "500":
           description: Internal server error
 
-  /reports/{id}:
+  /reports/{report_id}:
     patch:
       tags:
         - Report
       summary: Update report values
       parameters:
         - in: path
-          name: id
+          name: report_id
           required: true
           description: Report ID of report to update
           schema:
@@ -254,6 +255,41 @@ paths:
                     $ref: "#/components/schemas/Product"
         "400":
           description: invalid fields
+        "500":
+          description: Internal server error
+
+  /products/{product_id}:
+    patch:
+      tags:
+        - Product
+      summary: Update product values
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          description: Product ID of product to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: Updated Product Name
+                    isDeleted:
+                      type: boolean
+      responses:
+        "204":
+          description: Successfully updated product
+        "400":
+          description: Invalid fields
         "500":
           description: Internal server error
 

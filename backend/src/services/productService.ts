@@ -4,4 +4,6 @@ const createProduct = (newProduct: NewProduct): Product => {
   return { id: "qwdom231", isDeleted: false, ...newProduct };
 };
 
-export default { createProduct };
+const updateProduct = (productId: string, updatedProductFields: Partial<Product>): void => {};
+
+export default { createProduct, updateProduct };

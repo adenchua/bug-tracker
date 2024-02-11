@@ -4,14 +4,14 @@ import { validationResult } from "express-validator";
 import { NewReport, Report } from "../../interfaces/Report";
 import reportService from "../../services/reportService";
 
-type CreateReportBody = Omit<
+type CreateReportBody = Pick<
   Report,
-  "id" | "createdDateISOString" | "isPublic" | "status" | "media" | "completedDateISOString"
+  "title" | "description" | "type" | "URL" | "productId" | "reporterId" | "isPublic"
 >;
 
-type UpdateReportBody = Omit<
+type UpdateReportBody = Pick<
   Report,
-  "id" | "createdDateISOString" | "completedDateISOString" | "media" | "reporterId"
+  "URL" | "description" | "isPublic" | "status" | "title" | "type" | "productId"
 >;
 
 const createReport = (req: Request, res: Response): void => {
