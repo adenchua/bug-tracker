@@ -78,9 +78,17 @@ const updateReport = (req: Request, res: Response): void => {
 const getReportsByProductId = (req: Request, res: Response): void => {
   const { id } = req.params;
 
-  const reports = reportService.getReportsByProductId(id);
+  const reports = reportService.getReports({ productId: id });
 
-  res.status(200).send({ data: reports });
+  res.json({ data: reports });
 };
 
-export default { createReport, updateReport, getReportsByProductId };
+const getReportsByReporterId = (req: Request, res: Response): void => {
+  const { id } = req.params;
+
+  const reports = reportService.getReports({ reporterId: id });
+
+  res.json({ data: reports });
+};
+
+export default { createReport, updateReport, getReportsByProductId, getReportsByReporterId };
