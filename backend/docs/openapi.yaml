@@ -1,7 +1,7 @@
 openapi: "3.1.0"
 info:
   version: 1.0.0
-  title: Bug Hunter Server
+  title: Bug Tracker Server
 servers:
   - url: /api/v1
 paths:
@@ -54,6 +54,7 @@ paths:
       summary: Create a new report
       operationId: createReport
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -97,18 +98,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Report"
-              example:
-                id: Mdwqpdm213
-                title: This is a title of the report
-                description: This is a description of the report
-                URL: http://localhost.com/page-where-bug-was-found
-                type: BUG
-                productId: qowmdok213
-                reporterId: johndoe
-                isPublic: false
-                status: SUBMITTED
-                createdDateISOString: "2024-02-09T08:51:30.142Z"
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/Report"
+                    example:
+                      id: Mdwqpdm213
+                      title: This is a title of the report
+                      description: This is a description of the report
+                      URL: http://localhost.com/page-where-bug-was-found
+                      type: BUG
+                      productId: qowmdok213
+                      reporterId: johndoe
+                      isPublic: false
+                      status: SUBMITTED
+                      createdDateISOString: "2024-02-09T08:51:30.142Z"
         "400":
           description: An array of invalid fields are returned
           content:
@@ -139,14 +144,14 @@ paths:
         "500":
           description: Internal server error
 
-  /reports/{id}:
+  /reports/{report_id}:
     patch:
       tags:
         - Report
       summary: Update report values
       parameters:
         - in: path
-          name: id
+          name: report_id
           required: true
           description: Report ID of report to update
           schema:
@@ -222,6 +227,72 @@ paths:
         "500":
           description: Internal server error
 
+  /products:
+    post:
+      tags:
+        - Product
+      summary: Create new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Example Product
+      responses:
+        "201":
+          description: created new product is returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/Product"
+        "400":
+          description: invalid fields
+        "500":
+          description: Internal server error
+
+  /products/{product_id}:
+    patch:
+      tags:
+        - Product
+      summary: Update product values
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          description: Product ID of product to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: Updated Product Name
+                    isDeleted:
+                      type: boolean
+      responses:
+        "204":
+          description: Successfully updated product
+        "400":
+          description: Invalid fields
+        "500":
+          description: Internal server error
+
 components:
   schemas:
     Report:
@@ -253,7 +324,19 @@ components:
             - TRIAGED
             - FIXED
             - CLOSED
+          default:
+            - SUBMITTED
         createdDateISOString:
           type: string
         completedDateISOString:
           type: string
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        isDeleted:
+          type: boolean
+          default: false
