@@ -22,10 +22,10 @@ function TabNavigationBar(props: TabNavigationBarProps): JSX.Element {
 
   return (
     <AppBar
-      position="static"
+      position="sticky"
       elevation={0}
-      color="transparent"
-      sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+      color="inherit"
+      sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}`, top: "49px" }}
     >
       <Toolbar variant="dense">
         <Box ml={33} display="flex" gap={2}>

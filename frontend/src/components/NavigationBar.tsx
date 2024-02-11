@@ -16,10 +16,10 @@ function NavigationBar(): JSX.Element {
 
   return (
     <AppBar
-      position="static"
+      position="sticky"
       elevation={0}
-      color="transparent"
-      sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+      color="inherit"
+      sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}`, top: 0 }}
     >
       <Toolbar variant="dense">
         <Link to="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
